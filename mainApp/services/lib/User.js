@@ -1,4 +1,6 @@
 const axios = require("axios");
+const CircuitBreaker = require("../../lib/circuitBreaker");
+const circuitBreaker = new CircuitBreaker();
 class UserService {
   constructor(serviceRegistryUrl, serviceVersion) {
     this.serviceRegistryUrl = serviceRegistryUrl;
@@ -23,8 +25,7 @@ class UserService {
   }
 
   async callService(reqOptions) {
-    const res = await axios(reqOptions);
-    return res.data;
+    return await circuitBreaker.callService(reqOptions);
   }
 }
 
